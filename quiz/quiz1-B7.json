@@ -1,0 +1,205 @@
+{
+  "course": "Computer System Architecture",
+  "assessment": "Quiz 1 — Set B7",
+  "instructions": "This is a proctored quiz. Attempt all 15 questions. Each question carries equal marks and has exactly one correct option. Once the quiz begins, stay in full screen — switching tabs, minimising or leaving the window is recorded as a violation, and the attempt is submitted automatically on the third violation. Use a laptop on a stable network and close all other applications before you start.",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Memory organisation",
+      "question": "In a 64K x 8 chip, each cell stores:",
+      "options": {
+        "A": "1K bits",
+        "B": "8 bits",
+        "C": "64 bits",
+        "D": "16 bits"
+      },
+      "correct_answer": "B",
+      "shuffleOptions": false,
+      "explanation": "In the M x N notation, M is the number of addressable locations and N is the width of each location. 64K x 8 therefore means 65,536 locations of 8 bits each, i.e. 64 KB in total."
+    },
+    {
+      "id": 2,
+      "topic": "Stored-program concept",
+      "question": "In early non-stored-program computers, changing the task was difficult because:",
+      "options": {
+        "A": "They had no input",
+        "B": "Programs were written in Python",
+        "C": "Hardware/control wiring had to be changed",
+        "D": "Memory was unlimited"
+      },
+      "correct_answer": "C",
+      "explanation": "Machines such as ENIAC were programmed by physically rewiring plugboards and setting switches, so a new task meant days of rewiring. The stored-program idea removed this by keeping the program in memory alongside the data."
+    },
+    {
+      "id": 3,
+      "topic": "Signed number representation",
+      "question": "In 8-bit sign-magnitude representation, the magnitude field has:",
+      "options": {
+        "A": "8 bits",
+        "B": "6 bits",
+        "C": "4 bits",
+        "D": "7 bits"
+      },
+      "correct_answer": "D",
+      "shuffleOptions": false,
+      "explanation": "The most significant bit is reserved for the sign, leaving the remaining 7 bits for the magnitude. The representable range is therefore -127 to +127, with two encodings of zero."
+    },
+    {
+      "id": 4,
+      "topic": "Overflow detection",
+      "question": "Adding two negative 2's complement numbers gives a positive result. This indicates:",
+      "options": {
+        "A": "Overflow",
+        "B": "Underflow of decimal point",
+        "C": "Address error",
+        "D": "Normal result"
+      },
+      "correct_answer": "A",
+      "explanation": "Two operands of the same sign must produce a result of that same sign. When the sign of the result differs, the true value has fallen outside the representable range — that is signed overflow."
+    },
+    {
+      "id": 5,
+      "topic": "Architecture vs organisation",
+      "question": "Which item is closer to architecture?",
+      "options": {
+        "A": "Wire thickness only",
+        "B": "Cabinet color",
+        "C": "Instruction set",
+        "D": "Fan speed only"
+      },
+      "correct_answer": "C",
+      "explanation": "Architecture is what the programmer sees — the instruction set, registers, addressing modes and data types. Physical details such as wiring, cooling and packaging belong to organisation or implementation."
+    },
+    {
+      "id": 6,
+      "topic": "Carry and overflow",
+      "question": "In unsigned addition, carry out usually indicates:",
+      "options": {
+        "A": "Signed negative number",
+        "B": "Endianness",
+        "C": "Unsigned overflow",
+        "D": "Memory read"
+      },
+      "correct_answer": "C",
+      "explanation": "A carry out of the most significant bit means the sum needed one bit more than the word provides, so the unsigned result cannot be held — that is unsigned overflow. For signed numbers the corresponding test is a mismatch between carry-in and carry-out of the sign bit."
+    },
+    {
+      "id": 7,
+      "topic": "CPU registers",
+      "question": "During memory access, MAR usually contains:",
+      "options": {
+        "A": "Address of the memory location",
+        "B": "Instruction opcode only",
+        "C": "CPU clock frequency",
+        "D": "Output screen data only"
+      },
+      "correct_answer": "A",
+      "explanation": "The Memory Address Register holds the address placed on the address bus; the Memory Buffer (or Data) Register holds the data travelling to or from that location."
+    },
+    {
+      "id": 8,
+      "topic": "2's complement arithmetic",
+      "question": "The advantage of 2's complement hardware is:",
+      "options": {
+        "A": "Same adder can help perform addition and subtraction",
+        "B": "It removes memory",
+        "C": "It avoids all carry bits",
+        "D": "It needs no fixed word length"
+      },
+      "correct_answer": "A",
+      "explanation": "Since A - B equals A plus the 2's complement of B, one adder plus a complementer handles both operations. 2's complement also has a single representation of zero and needs no end-around carry."
+    },
+    {
+      "id": 9,
+      "topic": "2's complement arithmetic",
+      "question": "In 2's complement, the MSB has:",
+      "options": {
+        "A": "No value",
+        "B": "Only positive weight",
+        "C": "Negative weight in value interpretation",
+        "D": "Decimal base only"
+      },
+      "correct_answer": "C",
+      "explanation": "An n-bit 2's complement number has value -b(n-1)·2^(n-1) + the sum of the remaining positive weights. For 8 bits the MSB carries a weight of -128, which is why the range is -128 to +127."
+    },
+    {
+      "id": 10,
+      "topic": "Register transfer notation",
+      "question": "In register-transfer notation, M[MAR] <- MBR represents:",
+      "options": {
+        "A": "Opcode decode only",
+        "B": "Memory write",
+        "C": "Memory read",
+        "D": "Address increment only"
+      },
+      "correct_answer": "B",
+      "explanation": "The arrow shows the direction of transfer: the contents of MBR are being placed into the memory location addressed by MAR, i.e. a write. The read operation is written MBR <- M[MAR]."
+    },
+    {
+      "id": 11,
+      "topic": "1's complement",
+      "question": "In 8-bit 1's complement, 11111111 represents:",
+      "options": {
+        "A": "-1",
+        "B": "0",
+        "C": "255",
+        "D": "127"
+      },
+      "correct_answer": "B",
+      "shuffleOptions": false,
+      "explanation": "1's complement negates by inverting every bit, so 11111111 is the complement of 00000000 — negative zero. (In 2's complement the same pattern would be -1; the dual representation of zero is exactly the drawback of 1's complement.)"
+    },
+    {
+      "id": 12,
+      "topic": "Complements",
+      "question": "In binary, diminished radix complement is:",
+      "options": {
+        "A": "10's complement",
+        "B": "9's complement",
+        "C": "1's complement",
+        "D": "2's complement"
+      },
+      "correct_answer": "C",
+      "explanation": "For radix r the diminished radix complement is the (r-1)'s complement. With r = 2 that is the 1's complement; the radix complement itself is the 2's complement."
+    },
+    {
+      "id": 13,
+      "topic": "Complement subtraction",
+      "question": "In radix-complement subtraction, if no end carry occurs:",
+      "options": {
+        "A": "Carry must be discarded",
+        "B": "Result is positive directly",
+        "C": "Result is always zero",
+        "D": "Result is negative and in complement form"
+      },
+      "correct_answer": "D",
+      "explanation": "An end carry signals a positive result, which is read directly after discarding the carry. No end carry means the answer is negative, and its magnitude is obtained by taking the radix complement of the result."
+    },
+    {
+      "id": 14,
+      "topic": "Complements",
+      "question": "Fixed word length is important in complement arithmetic because:",
+      "options": {
+        "A": "Sign is never needed",
+        "B": "Decimal numbers cannot use complements",
+        "C": "Complement depends on number of digits/bits",
+        "D": "Binary numbers have infinite bits only"
+      },
+      "correct_answer": "C",
+      "explanation": "The complement is defined as r^n - N, so n — the agreed number of digits — is part of the definition. The 10's complement of 9 is 91 in two digits but 991 in three."
+    },
+    {
+      "id": 15,
+      "topic": "2's complement arithmetic",
+      "question": "In 2's complement subtraction A - B, the operation is:",
+      "options": {
+        "A": "B - A always",
+        "B": "A + 2's complement of B",
+        "C": "A + B only",
+        "D": "A + 1"
+      },
+      "correct_answer": "B",
+      "explanation": "The 2's complement of B represents -B, so subtraction becomes addition: A - B = A + (-B). In hardware this is A + (NOT B) + 1, which is why the adder's carry-in is set to 1 for subtraction."
+    }
+  ]
+}

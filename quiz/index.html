@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Quiz</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="no-select">
+  <div class="topbar">
+    <h1>Online Quiz &mdash; UPES</h1>
+    <span class="right" id="whoami"></span>
+  </div>
+
+  <!-- connection state, shown only when a write is pending -->
+  <div id="netChip" class="net-chip hidden">Reconnecting…</div>
+
+  <!-- proctor overlay: covers everything when the student leaves the assessment -->
+  <div id="proctorOverlay" class="proctor-overlay hidden">
+    <div class="proctor-box">
+      <div class="proctor-icon">⚠</div>
+      <h2 id="proctorTitle">Assessment paused</h2>
+      <p id="proctorBody" class="proctor-body"></p>
+      <div class="proctor-count">
+        Violations: <b id="proctorCount">0</b> of <b id="proctorMax">3</b>
+      </div>
+      <p class="proctor-timer">Time remaining: <b id="proctorTimer">--:--</b> — the clock is still running.</p>
+      <button class="btn block" id="resumeBtn">Return to the quiz</button>
+      <p class="proctor-foot">This event has been recorded and is visible to your instructor.</p>
+    </div>
+  </div>
+
+  <div class="wrap" id="mainWrap">
+
+    <!-- Plain (non-module) script: still runs on file://, where modules do not. -->
+    <script>
+      if (location.protocol === "file:") {
+        document.write(
+          '<div class="notice err"><b>This page must be opened over http, not as a file.</b><br>' +
+          'Please use the link your instructor gave you — ' +
+          '<code>https://mohsinfurkh.github.io/academic-portal/quiz/</code></div>'
+        );
+      }
+    </script>
+
+    <!-- STEP 1: Login -->
+    <section id="loginView" class="card">
+      <h2>Student Sign-in</h2>
+      <p class="sub">Enter your details and choose your quiz to begin.</p>
+      <div id="loginMsg"></div>
+
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="e.g. Aisha Khan" autocomplete="off" />
+
+      <label for="sapId">SAP ID</label>
+      <input type="text" id="sapId" placeholder="e.g. 500098765" autocomplete="off" />
+
+      <label for="quizSelect">Quiz</label>
+      <select id="quizSelect">
+        <option value="">Loading quizzes…</option>
+      </select>
+
+      <div style="margin-top:18px">
+        <button class="btn block" id="startBtn">Continue</button>
+      </div>
+      <p class="sub" style="margin-top:16px">
+        This is a proctored assessment. It runs in full screen, and leaving the window is
+        recorded. Use a laptop or desktop with a stable connection.
+      </p>
+    </section>
+
+    <!-- STEP 2: Rules / confirm -->
+    <section id="readyView" class="card hidden">
+      <h2 id="readyTitle">Quiz</h2>
+      <p class="sub" id="readyMeta"></p>
+      <div id="readyInstructions" class="notice warn"></div>
+
+      <div class="rules-box">
+        <h3>Examination rules — read before you start</h3>
+        <ol>
+          <li>The quiz opens in <b>full screen</b>. Leaving full screen, switching tabs,
+            switching apps or minimising the window counts as a <b>violation</b>.</li>
+          <li>You are allowed <b id="ruleMax">3</b> violations. On the
+            <b>last one your quiz is submitted automatically</b> with whatever you have
+            answered.</li>
+          <li>Every violation is timestamped and sent to your instructor immediately.</li>
+          <li>The timer starts when you press <b>Start Quiz</b> and <b>never pauses</b> —
+            not during a violation, not if you disconnect.</li>
+          <li>Copy, paste, right-click, printing and developer shortcuts are disabled.</li>
+          <li>If you refresh or lose connection briefly, reopen this page on the
+            <b>same browser</b> to resume the same attempt with the remaining time. If that
+            device will not come back, tell your instructor — they can let you resume on
+            another one and grant you the time you lost.</li>
+          <li>Your score is <b>not</b> shown here. Results are released by your instructor
+            after the quiz.</li>
+          <li>The <b>Start</b> button unlocks only after the reading time below has elapsed.
+            That time is separate from your quiz duration.</li>
+        </ol>
+      </div>
+
+      <div class="read-gate" id="readGate">
+        <div class="read-gate-label">Reading time remaining</div>
+        <div class="read-gate-time" id="readTimer">02:00</div>
+        <p class="read-gate-note" id="readGateNote">
+          Read the rules above carefully. The Start button unlocks when this reaches zero —
+          this time is <b>not</b> taken from your quiz duration.
+        </p>
+      </div>
+
+      <label class="agree">
+        <input type="checkbox" id="agree" disabled />
+        <span>I have read the rules and I am starting the quiz myself.</span>
+      </label>
+
+      <button class="btn block" id="beginBtn" disabled>Start Quiz in Full Screen</button>
+      <p class="sub" id="fsWarn" style="margin-top:12px"></p>
+    </section>
+
+    <!-- STEP 3: Quiz -->
+    <section id="quizView" class="hidden">
+      <div class="quiz-header">
+        <div>
+          <div style="font-weight:600" id="quizViewTitle"></div>
+          <div class="switch-badge">
+            Violations: <b id="switchCount">0</b> / <span id="switchMax">3</span>
+            <span class="saved-chip" id="savedChip">saved</span>
+            <span class="pill warnpill hidden" id="extraChip"></span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="timer" id="timer">--:--</div>
+          <button class="btn danger sm" id="submitBtn">Submit</button>
+        </div>
+      </div>
+      <div id="questions"></div>
+      <div class="card">
+        <div class="progress-dots" id="dots"></div>
+        <button class="btn block" id="submitBtn2" style="margin-top:16px">Submit Quiz</button>
+      </div>
+    </section>
+
+    <!-- STEP 4: Result -->
+    <section id="resultView" class="card hidden">
+      <h2 id="resultTitle">Submitted ✅</h2>
+      <p class="sub" id="resultMeta"></p>
+      <div class="stat-grid">
+        <div class="stat">
+          <div class="n" id="rAnswered">–</div>
+          <div class="l">Questions answered</div>
+        </div>
+        <div class="stat">
+          <div class="n" id="rSwitches">–</div>
+          <div class="l">Violations recorded</div>
+        </div>
+        <div class="stat">
+          <div class="n mono" id="rReceipt">–</div>
+          <div class="l">Receipt</div>
+        </div>
+      </div>
+      <div id="resultNotice" class="notice ok" style="margin-top:16px">
+        Your answers are recorded. Your score will be released by your instructor after the quiz.
+      </div>
+      <p class="sub">You may now close this window.</p>
+    </section>
+
+    <!-- Submission failure rescue panel -->
+    <section id="rescueView" class="card hidden">
+      <h2 style="color:var(--bad)">Submission not confirmed</h2>
+      <div class="notice err">
+        Your answers could not be sent to the server. <b>Do not close this window.</b>
+        Raise your hand and tell your instructor.
+      </div>
+      <p class="sub">Your answers are safe in this browser. Try again when the network returns:</p>
+      <button class="btn block" id="retryBtn">Retry submission</button>
+      <button class="btn secondary block" id="downloadBtn" style="margin-top:10px">
+        Download answer receipt (backup)
+      </button>
+      <p class="sub" style="margin-top:12px">
+        If retrying keeps failing, send the downloaded file to your instructor from your
+        own email — it is timestamped proof of your answers.
+      </p>
+    </section>
+
+  </div>
+
+  <script type="module" src="student.js"></script>
+</body>
+
+</html>

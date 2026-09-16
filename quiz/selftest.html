@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz system — self test</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .t-row { display: flex; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: .92rem; }
+    .t-row .st { font-weight: 700; min-width: 54px; }
+    .t-row.pass .st { color: var(--good); }
+    .t-row.fail .st { color: var(--bad); }
+    .t-row .why { color: var(--muted); }
+    .grp { margin-top: 18px; font-weight: 700; color: var(--primary); }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <h1>Quiz system — self test</h1>
+    <span class="right"><a href="admin.html" style="color:#fff">Dashboard →</a></span>
+  </div>
+
+  <div class="wrap">
+    <section class="card">
+      <h2>Offline checks</h2>
+      <p class="sub">
+        Runs the grading, answer-key-splitting, roster and proctoring logic with no
+        Firebase involved — nothing here touches your live data. Run it after any change
+        to the quiz code, and once on the machine you will use on quiz day.
+      </p>
+      <div id="summary" class="notice warn">Running…</div>
+      <div id="results"></div>
+    </section>
+  </div>
+
+  <script type="module" src="selftest.js"></script>
+</body>
+
+</html>

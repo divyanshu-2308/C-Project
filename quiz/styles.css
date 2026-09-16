@@ -1,0 +1,258 @@
+:root {
+  --primary: #1a5276;
+  --primary-dark: #12384f;
+  --accent: #2e86c1;
+  --bg: #f4f7fa;
+  --card: #ffffff;
+  --text: #22303c;
+  --muted: #6b7b8a;
+  --border: #dfe6ec;
+  --good: #1e8449;
+  --bad: #c0392b;
+  --warn: #b9770e;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.wrap { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+.wrap.wide { max-width: 1200px; }
+
+.topbar {
+  background: var(--primary);
+  color: #fff;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow);
+}
+.topbar h1 { font-size: 1.1rem; margin: 0; font-weight: 600; }
+.topbar .right { font-size: .9rem; opacity: .95; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+h2 { margin: 0 0 6px; font-size: 1.25rem; }
+.sub { color: var(--muted); margin: 0 0 18px; font-size: .92rem; }
+
+label { display: block; font-weight: 600; margin: 12px 0 6px; font-size: .9rem; }
+input[type="text"], input[type="number"], input[type="password"], select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+}
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+textarea { font-family: ui-monospace, "Cascadia Code", monospace; font-size: .9rem; resize: vertical; }
+
+.row { display: flex; gap: 14px; flex-wrap: wrap; }
+.row > .col { flex: 1 1 160px; }
+
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn:hover { background: var(--primary); }
+.btn:disabled { background: #9fb3c0; cursor: not-allowed; }
+.btn.secondary { background: #eef3f7; color: var(--primary); border: 1px solid var(--border); }
+.btn.secondary:hover { background: #e2ebf2; }
+.btn.danger { background: var(--bad); }
+.btn.block { width: 100%; }
+.btn.sm { padding: 7px 12px; font-size: .85rem; }
+.btn.xs { padding: 4px 9px; font-size: .78rem; }
+
+.hidden { display: none !important; }
+
+.notice { padding: 10px 14px; border-radius: 8px; font-size: .9rem; margin: 10px 0; }
+.notice.err { background: #fdecea; color: var(--bad); border: 1px solid #f5c6cb; }
+.notice.ok { background: #eafaf1; color: var(--good); border: 1px solid #b7e4c7; }
+.notice.warn { background: #fff6e5; color: var(--warn); border: 1px solid #f5d78e; }
+
+/* ---- Quiz taking ---- */
+.quiz-header {
+  position: sticky; top: 0; z-index: 20;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 12px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px; flex-wrap: wrap; gap: 8px;
+}
+.timer {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700; font-size: 1.3rem;
+  padding: 4px 12px; border-radius: 8px;
+  background: #eef3f7; color: var(--primary);
+}
+.timer.low { background: #fdecea; color: var(--bad); animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: .55; } }
+.switch-badge { font-size: .85rem; color: var(--muted); }
+.switch-badge b { color: var(--bad); }
+
+.q-block { margin-bottom: 4px; }
+.q-num { color: var(--accent); font-weight: 700; font-size: .85rem; letter-spacing: .04em; }
+.q-text { font-weight: 600; margin: 4px 0 12px; }
+.opt {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; border: 1px solid var(--border);
+  border-radius: 8px; margin-bottom: 8px; cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.opt:hover { border-color: var(--accent); background: #f7fbfe; }
+.opt input { margin-top: 3px; }
+.opt.checked { border-color: var(--accent); background: #eaf4fb; }
+.opt .key { font-weight: 700; color: var(--primary); }
+
+.progress-dots { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.dot {
+  width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--border);
+  background: #fff; font-size: .8rem; cursor: pointer; color: var(--muted);
+}
+.dot.answered { background: var(--accent); color: #fff; border-color: var(--accent); }
+.dot.current { outline: 2px solid var(--primary); }
+
+/* watermark shown during quiz to discourage screenshots */
+.wm { position: fixed; inset: 0; pointer-events: none; z-index: 5;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.4rem; color: rgba(26,82,118,0.05); font-weight: 800;
+  transform: rotate(-24deg); user-select: none; }
+
+/* ---- Admin table ---- */
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { padding: 9px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+th { background: #f0f5f9; color: var(--primary); font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+tr:hover td { background: #f9fbfd; }
+.pill { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: .78rem; font-weight: 600; }
+.pill.live { background: #fff6e5; color: var(--warn); }
+.pill.done { background: #eafaf1; color: var(--good); }
+.pill.flag { background: #fdecea; color: var(--bad); }
+/* Faculty granted something: extra time, or a resume the student has not taken yet. */
+.pill.warnpill { background: #eef3f7; color: var(--primary); border: 1px solid var(--border); }
+
+.row-actions { white-space: nowrap; }
+.row-actions .btn { margin-right: 5px; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.stat { background: #f6f9fb; border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
+.stat .n { font-size: 1.7rem; font-weight: 700; color: var(--primary); }
+.stat .l { font-size: .8rem; color: var(--muted); }
+
+.muted { color: var(--muted); }
+.mono { font-family: ui-monospace, "Cascadia Code", monospace; }
+.right-align { text-align: right; }
+.no-select { user-select: none; -webkit-user-select: none; }
+
+/* ---- Proctoring ---- */
+
+/* Content is blurred the instant focus is lost, so anything captured while
+   switching away (screenshot, screen share, second monitor) is unreadable. */
+body.screen-hidden .wrap { filter: blur(22px); pointer-events: none; }
+
+.proctor-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(18, 56, 79, .97);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.proctor-box {
+  background: #fff; border-radius: 14px; padding: 30px;
+  max-width: 560px; width: 100%; text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+}
+.proctor-icon { font-size: 2.6rem; color: var(--bad); line-height: 1; }
+.proctor-box h2 { margin: 10px 0 8px; color: var(--bad); font-size: 1.5rem; }
+.proctor-body { color: var(--text); font-size: 1.02rem; margin: 0 0 14px; }
+.proctor-count {
+  display: inline-block; background: #fdecea; color: var(--bad);
+  border: 1px solid #f5c6cb; border-radius: 8px;
+  padding: 6px 14px; font-size: 1rem; margin-bottom: 10px;
+}
+.proctor-timer { font-size: .92rem; color: var(--muted); margin: 0 0 16px; }
+.proctor-foot { font-size: .82rem; color: var(--muted); margin: 12px 0 0; }
+
+.rules-box {
+  background: #f6f9fb; border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 18px; margin: 16px 0;
+}
+.rules-box h3 { margin: 0 0 10px; font-size: 1rem; color: var(--primary); }
+.rules-box ol { margin: 0; padding-left: 20px; font-size: .93rem; }
+.rules-box li { margin-bottom: 7px; }
+
+/* Compulsory reading time on the instructions screen */
+.read-gate {
+  background: #eef3f7;
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 16px 0;
+  text-align: center;
+}
+.read-gate-label {
+  font-size: .78rem; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--primary);
+}
+.read-gate-time {
+  font-family: ui-monospace, "Cascadia Code", monospace;
+  font-size: 2.4rem; font-weight: 700; line-height: 1.1;
+  color: var(--primary); font-variant-numeric: tabular-nums;
+}
+.read-gate-note { font-size: .86rem; color: var(--muted); margin: 4px 0 0; }
+.read-gate.unlocked {
+  background: #eafaf1; border-color: var(--good);
+}
+.read-gate.unlocked .read-gate-label,
+.read-gate.unlocked .read-gate-time { color: var(--good); }
+
+.agree {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-weight: 500; font-size: .95rem; margin: 4px 0 16px;
+  cursor: pointer;
+}
+.agree input { margin-top: 4px; width: 18px; height: 18px; }
+
+.net-chip {
+  position: fixed; top: 60px; right: 16px; z-index: 9998;
+  background: var(--warn); color: #fff; font-size: .82rem; font-weight: 600;
+  padding: 6px 14px; border-radius: 20px; box-shadow: var(--shadow);
+}
+.saved-chip {
+  margin-left: 8px; font-size: .74rem; color: var(--good);
+  opacity: 0; transition: opacity .25s;
+}
+.saved-chip.flash { opacity: 1; }
+
+/* Printing an exam paper is never legitimate. */
+@media print {
+  body * { display: none !important; }
+  body::after {
+    content: "Printing is disabled during this assessment.";
+    display: block !important; font-size: 20pt; padding: 40pt;
+  }
+}

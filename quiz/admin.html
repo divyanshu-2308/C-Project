@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Admin — Faculty Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="topbar">
+    <h1>Faculty Dashboard</h1>
+    <span class="right">
+      <span id="whoAdmin" class="muted" style="color:#dfe6ec;margin-right:12px"></span>
+      <a href="index.html" style="color:#fff">Student view →</a>
+    </span>
+  </div>
+
+  <div class="wrap wide">
+
+    <!-- Plain (non-module) script: this still runs on file://, where modules do not.
+         Without it a file:// visit silently produces a page where nothing works. -->
+    <script>
+      if (location.protocol === "file:") {
+        document.write(
+          '<div class="notice err" style="max-width:640px;margin:40px auto">' +
+          '<b>Open this page over http, not as a file.</b><br>' +
+          'Browsers block JavaScript modules on <code>file://</code>, so every button on ' +
+          'this page is dead. Use the published address ' +
+          '<code>https://mohsinfurkh.github.io/academic-portal/quiz/admin.html</code>, ' +
+          'or run <code>python3 -m http.server 8123</code> in the project folder and open ' +
+          '<code>http://localhost:8123/quiz/admin.html</code>.</div>'
+        );
+      }
+    </script>
+
+    <!-- Sign in -->
+    <section id="gateView" class="card" style="max-width:440px;margin:40px auto">
+      <h2>Faculty Sign-in</h2>
+      <p class="sub">Sign in with your faculty account. Access is enforced by Firestore
+        rules, not by this page.</p>
+      <div id="gateMsg"></div>
+      <label for="email">Email</label>
+      <input type="text" id="email" placeholder="you@example.com" autocomplete="username" />
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+      <button class="btn block" id="gateBtn" style="margin-top:16px">Sign in</button>
+    </section>
+
+    <div id="app" class="hidden">
+
+      <!-- Create quiz -->
+      <section class="card">
+        <h2>Create / Update a Quiz</h2>
+        <p class="sub">
+          Upload a questions JSON, set the rules, save. Correct answers are stored in a
+          separate faculty-only document — students never receive them.
+        </p>
+        <div id="createMsg"></div>
+
+        <label for="jsonFile">Questions JSON file</label>
+        <input type="file" id="jsonFile" accept="application/json,.json" />
+        <div id="jsonInfo" class="sub"></div>
+
+        <label for="title">Quiz title</label>
+        <input type="text" id="title" placeholder="e.g. CSEG3060 Quiz 1 — Unit I" />
+
+        <div class="row">
+          <div class="col">
+            <label for="duration">Duration (minutes)</label>
+            <input type="number" id="duration" value="20" min="1" />
+          </div>
+          <div class="col">
+            <label for="marks">Marks per question</label>
+            <input type="number" id="marks" value="1" min="0" step="0.5" />
+          </div>
+          <div class="col">
+            <label for="negative">Negative marks (wrong)</label>
+            <input type="number" id="negative" value="0" min="0" step="0.25" />
+          </div>
+          <div class="col">
+            <label for="maxViolations">Violations allowed</label>
+            <input type="number" id="maxViolations" value="3" min="1" max="10" />
+          </div>
+          <div class="col">
+            <label for="readingMinutes">Reading time (min)</label>
+            <input type="number" id="readingMinutes" value="2" min="0" max="30" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:6px">
+          <div class="col">
+            <label for="active">Status</label>
+            <select id="active">
+              <option value="false">Draft / closed</option>
+              <option value="true">Active (students can take it)</option>
+            </select>
+          </div>
+          <div class="col">
+            <label for="shuffle">Question order</label>
+            <select id="shuffle">
+              <option value="true">Shuffle per student</option>
+              <option value="false">Keep JSON order</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="roster">Allowed SAP IDs (roster)</label>
+        <textarea id="roster" rows="4" placeholder="Paste SAP IDs — separated by spaces, commas or new lines.&#10;500098765  500098766  500098767"></textarea>
+        <div class="sub" id="rosterInfo">No roster loaded — <b>the quiz cannot be saved without one</b>.</div>
+        <input type="file" id="rosterFile" accept=".txt,.csv,text/plain,text/csv" />
+
+        <button class="btn block" id="saveQuizBtn" style="margin-top:18px" disabled>Save Quiz</button>
+      </section>
+
+      <!-- Monitor -->
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+          <h2 style="margin:0">Live Monitor</h2>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <select id="monitorQuiz" style="width:auto"></select>
+            <button class="btn sm" id="gradeBtn">Grade all attempts</button>
+            <button class="btn secondary sm" id="reportBtn">Download all attempts</button>
+            <button class="btn secondary sm" id="exportBtn">Export CSV</button>
+            <button class="btn secondary sm" id="closeQuizBtn">Close quiz</button>
+          </div>
+        </div>
+        <p class="sub">Live while students take the quiz. Grading runs here, after the quiz —
+          answers are never graded in the student's browser. <b>Download all attempts</b> saves
+          every student's full answer sheet for this quiz as one file you can open, keep or
+          print. A <b>stale</b> student has not
+          checked in for a minute: use <b>Allow resume</b> to let them back in (on any
+          device, with extra time if you grant it) or <b>Force submit</b> to close the
+          attempt as it stands so it can be graded.</p>
+        <div id="monitorMsg"></div>
+
+        <div class="stat-grid" style="margin:14px 0">
+          <div class="stat">
+            <div class="n" id="sTotal">0</div>
+            <div class="l">Students</div>
+          </div>
+          <div class="stat">
+            <div class="n" id="sLive">0</div>
+            <div class="l">In progress</div>
+          </div>
+          <div class="stat">
+            <div class="n" id="sDone">0</div>
+            <div class="l">Submitted</div>
+          </div>
+          <div class="stat">
+            <div class="n" id="sAvg">–</div>
+            <div class="l">Avg score</div>
+          </div>
+          <div class="stat">
+            <div class="n" id="sFlag">0</div>
+            <div class="l">Flagged (violations)</div>
+          </div>
+          <div class="stat">
+            <div class="n" id="sStale">0</div>
+            <div class="l">Not responding</div>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>SAP ID</th>
+                <th>Status</th>
+                <th class="right-align">Violations</th>
+                <th>Last event</th>
+                <th class="right-align">Answered</th>
+                <th class="right-align">Score</th>
+                <th>Started</th>
+                <th>Submitted</th>
+                <th>Live</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="rows">
+              <tr>
+                <td colspan="11" class="muted">Select a quiz to monitor.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+
+</html>

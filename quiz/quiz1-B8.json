@@ -1,0 +1,205 @@
+{
+  "course": "Computer System Architecture",
+  "assessment": "Quiz 1 — Set B8",
+  "instructions": "This is a proctored quiz. Attempt all 15 questions. Each question carries equal marks and has exactly one correct option. Once the quiz begins, stay in full screen — switching tabs, minimising or leaving the window is recorded as a violation, and the attempt is submitted automatically on the third violation. Use a laptop on a stable network and close all other applications before you start.",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Byte ordering",
+      "question": "Endianness changes:",
+      "options": {
+        "A": "Order of array elements",
+        "B": "Number of registers",
+        "C": "Mathematical value of the number",
+        "D": "Order of bytes within a multi-byte value"
+      },
+      "correct_answer": "D",
+      "explanation": "Endianness decides only how the bytes of a multi-byte quantity are laid out in memory — most significant byte first (big-endian) or least significant first (little-endian). The value itself is unchanged; it matters when data moves between machines or is read byte by byte."
+    },
+    {
+      "id": 2,
+      "topic": "Signed number representation",
+      "question": "In sign-magnitude representation, sign bit 0 usually means:",
+      "options": {
+        "A": "Positive",
+        "B": "Overflow",
+        "C": "Borrow",
+        "D": "Negative"
+      },
+      "correct_answer": "A",
+      "explanation": "By convention the sign bit is 0 for positive and 1 for negative, in sign-magnitude as well as in 1's and 2's complement. The remaining bits hold the magnitude."
+    },
+    {
+      "id": 3,
+      "topic": "2's complement range",
+      "question": "The largest positive 8-bit 2's complement number is:",
+      "options": {
+        "A": "0",
+        "B": "01111111",
+        "C": "10000000",
+        "D": "11111111"
+      },
+      "correct_answer": "B",
+      "shuffleOptions": false,
+      "explanation": "The sign bit must be 0 for a positive value, and all seven magnitude bits are then set: 01111111 = +127. 10000000 is the most negative value (-128) and 11111111 is -1."
+    },
+    {
+      "id": 4,
+      "topic": "Overflow detection",
+      "question": "Signed overflow in 2's complement addition occurs when:",
+      "options": {
+        "A": "Two same-sign numbers give opposite-sign result",
+        "B": "Result is positive",
+        "C": "Carry is zero",
+        "D": "Two opposite-sign numbers are added"
+      },
+      "correct_answer": "A",
+      "explanation": "Adding operands of opposite sign can never overflow, since the magnitude of the result is bounded by the larger operand. Overflow is possible only with like signs, and is detected when the result's sign disagrees with them."
+    },
+    {
+      "id": 5,
+      "topic": "Word size",
+      "question": "Word size refers to:",
+      "options": {
+        "A": "Number of files in memory",
+        "B": "Number of words in a paragraph",
+        "C": "Number of instructions in a program only",
+        "D": "Number of bits processed by CPU at a time"
+      },
+      "correct_answer": "D",
+      "explanation": "The word is the natural unit of data for a processor — typically the width of its registers, ALU and data paths. A 64-bit machine has a 64-bit word."
+    },
+    {
+      "id": 6,
+      "topic": "Complements",
+      "question": "The 10's complement of 009 using three digits is:",
+      "options": {
+        "A": "999",
+        "B": "9",
+        "C": "990",
+        "D": "991"
+      },
+      "correct_answer": "D",
+      "shuffleOptions": false,
+      "explanation": "The radix complement is r^n - N = 1000 - 9 = 991. Equivalently, take the 9's complement (990) and add 1."
+    },
+    {
+      "id": 7,
+      "topic": "Complements",
+      "question": "In decimal, diminished radix complement is:",
+      "options": {
+        "A": "9's complement",
+        "B": "1's complement",
+        "C": "2's complement",
+        "D": "10's complement"
+      },
+      "correct_answer": "A",
+      "explanation": "The diminished radix complement is the (r-1)'s complement. With r = 10 that is the 9's complement, obtained by subtracting each digit from 9."
+    },
+    {
+      "id": 8,
+      "topic": "System buses",
+      "question": "The data bus is mainly used to transfer:",
+      "options": {
+        "A": "Only timing signals",
+        "B": "Only power",
+        "C": "Data",
+        "D": "Only addresses"
+      },
+      "correct_answer": "C",
+      "explanation": "A system bus has three parts: the address bus carries the location, the data bus carries the data or instruction, and the control bus carries signals such as read, write and clock."
+    },
+    {
+      "id": 9,
+      "topic": "Stored-program concept",
+      "question": "The stored-program concept is associated with:",
+      "options": {
+        "A": "Turing and von Neumann",
+        "B": "Newton and Galileo",
+        "C": "TCP and IP",
+        "D": "HTML and CSS"
+      },
+      "correct_answer": "A",
+      "explanation": "Turing's universal machine supplied the theoretical basis and von Neumann's 1945 EDVAC report described the practical architecture in which instructions and data share the same memory."
+    },
+    {
+      "id": 10,
+      "topic": "1's complement",
+      "question": "In 1's complement addition, adding end carry to LSB is called:",
+      "options": {
+        "A": "Sign extension",
+        "B": "Address decoding",
+        "C": "End-around carry",
+        "D": "Byte ordering"
+      },
+      "correct_answer": "C",
+      "explanation": "In 1's complement a carry out of the most significant bit must be added back into the least significant bit to correct the result. This extra step is one reason 2's complement is preferred in hardware."
+    },
+    {
+      "id": 11,
+      "topic": "2's complement range",
+      "question": "In 8-bit 2's complement, the range is:",
+      "options": {
+        "A": "0 to 255",
+        "B": "-255 to +255",
+        "C": "-128 to +127",
+        "D": "-127 to +127"
+      },
+      "correct_answer": "C",
+      "shuffleOptions": false,
+      "explanation": "The range is -2^(n-1) to 2^(n-1) - 1. The negative side reaches one further because 2's complement has only one representation of zero; -127 to +127 is the 1's complement and sign-magnitude range."
+    },
+    {
+      "id": 12,
+      "topic": "1's complement",
+      "question": "In 1's complement addition, an end carry is:",
+      "options": {
+        "A": "Subtracted from result",
+        "B": "Discarded always",
+        "C": "Added back to the LSB",
+        "D": "Treated as sign bit"
+      },
+      "correct_answer": "C",
+      "explanation": "The end-around carry is added into the least significant bit. Discarding the carry is what one does in 2's complement arithmetic, not 1's complement."
+    },
+    {
+      "id": 13,
+      "topic": "Memory organisation",
+      "question": "A word-addressable memory means:",
+      "options": {
+        "A": "Addressing is impossible",
+        "B": "Only bytes can be addressed",
+        "C": "Each word has a unique address",
+        "D": "Each character has a separate address"
+      },
+      "correct_answer": "C",
+      "explanation": "In a word-addressable memory the smallest unit that carries an address is a whole word, so consecutive addresses differ by one word rather than one byte. Byte-addressable memory gives every byte its own address."
+    },
+    {
+      "id": 14,
+      "topic": "Carry and overflow",
+      "question": "Carry out alone is:",
+      "options": {
+        "A": "Always zero",
+        "B": "Not sufficient for signed overflow detection",
+        "C": "Always the sign bit",
+        "D": "Always signed overflow"
+      },
+      "correct_answer": "B",
+      "explanation": "Carry out detects unsigned overflow. Signed overflow requires comparing the carry into the sign bit with the carry out of it — overflow occurs only when the two differ."
+    },
+    {
+      "id": 15,
+      "topic": "2's complement arithmetic",
+      "question": "In 2's complement subtraction A - B, the operation is:",
+      "options": {
+        "A": "B - A always",
+        "B": "A + 2's complement of B",
+        "C": "A + B only",
+        "D": "A + 1"
+      },
+      "correct_answer": "B",
+      "explanation": "The 2's complement of B represents -B, so subtraction becomes addition: A - B = A + (-B). In hardware this is A + (NOT B) + 1, which is why the adder's carry-in is set to 1 for subtraction."
+    }
+  ]
+}
